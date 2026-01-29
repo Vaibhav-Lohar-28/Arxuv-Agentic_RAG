@@ -25,7 +25,7 @@ services:
       - OPENSEARCH_HOST=http://opensearch:9200
       - OPENSEARCH__HOST=http://opensearch:9200
       - OLLAMA_HOST=http://ollama:11434
-      - POSTGRES_DATABASE_URL=postgresql+psycopg2://rag_user:rag_password@postgres:5432/rag_db
+      - POSTGRES_DATABASE_URL=postgresql+psycopg2://vaibhav:Password123@postgres:5432/rag_project_db
       - LANGFUSE_HOST=http://langfuse-web:3000  
       - LANGFUSE_DEBUG=true
       - REDIS__HOST=redis
@@ -110,7 +110,7 @@ services:
     environment:
       - AIRFLOW_HOME=/opt/airflow
       - PYTHONPATH=/opt/airflow/src
-      - POSTGRES_DATABASE_URL=postgresql+psycopg2://rag_user:rag_password@postgres:5432/rag_db
+      - POSTGRES_DATABASE_URL=postgresql+psycopg2://vaibhav:Password123@postgres:5432/rag_project_db
       - OPENSEARCH_HOST=http://opensearch:9200
       - OPENSEARCH__HOST=http://opensearch:9200
       - OLLAMA_HOST=http://ollama:11434
@@ -151,17 +151,17 @@ services:
     image: postgres:16-alpine
     container_name: rag-postgres
     environment:
-      - POSTGRES_DB=rag_db
-      - POSTGRES_USER=rag_user
-      - POSTGRES_PASSWORD=rag_password
+      - POSTGRES_DB=rag_project_db
+      - POSTGRES_USER=vaibhav
+      - POSTGRES_PASSWORD=Password123
       - POSTGRES_HOST_AUTH_METHOD=password
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
-      - "5435:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rag_user -d rag_db"]
+      test: ["CMD-SHELL", "pg_isready -U vaibhav -d rag_project_db"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -207,7 +207,7 @@ services:
       - "3030:3030"
     environment:
       NEXTAUTH_URL: http://localhost:3001
-      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-postgres:5432/langfuse
+      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-postgres:5433/langfuse
       SALT: ${LANGFUSE_SALT}
       ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY}
       TELEMETRY_ENABLED: "false"
@@ -257,7 +257,7 @@ services:
     environment:
       NEXTAUTH_URL: http://localhost:3001
       NEXTAUTH_SECRET: ${LANGFUSE_NEXTAUTH_SECRET}
-      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-postgres:5432/langfuse
+      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-postgres:5433/langfuse
       SALT: ${LANGFUSE_SALT}
       ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY}
       TELEMETRY_ENABLED: "false"
@@ -305,9 +305,9 @@ services:
     container_name: rag-langfuse-postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=rag_user
-      - POSTGRES_PASSWORD=rag_password
-      - POSTGRES_DB=rag_db
+      - POSTGRES_USER=vaibhav
+      - POSTGRES_PASSWORD=Password123
+      - POSTGRES_DB=rag_project_db
       - POSTGRES_HOST_AUTH_METHOD=password
       - TZ=UTC
       - PGTZ=UTC
